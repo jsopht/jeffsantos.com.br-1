@@ -1,0 +1,15 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    <Jefferson Santos> -- <Developer> -- <jefflssantos>
+
+# THANKS
+
+    <Jefferson Santos>
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5
+    Apache Server Configs, jQuery,jQuery.Scrolly.js, Modernizr, Normalize.css, skel.js, util.js
