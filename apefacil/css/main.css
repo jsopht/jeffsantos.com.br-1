@@ -1,0 +1,74 @@
+/*body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}*/
+.containser {
+    border-style: dotted;
+    border-color: black;
+    border-width: 1px;
+}
+
+.navbar-brand {
+    background-color: #ffffff;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+    background-color: #ffffff !important;
+}
+
+.navbar-brand .img-brand {
+    width: 74px;
+}
+.navbar-brand .img-brand img {
+    width: 30px;
+}
+
+
+/*
+ * All personal Apê Fácil CSS
+ */
+
+.ap-text-info {
+    color: #287CCF;
+}
+
+.ap-text-success {
+    color: #61AC51;
+}
+
+.ap-text-warning {
+    color: #287CCF;
+}
+
+.ap-text-danger {
+    color: #287CCF;
+}
+
+.ap-profile {
+    width: 90px;
+    height: 90px;
+}
+
+.ap-dl-profile h3 {
+    margin-bottom: 0px;
+}
+
+.ap-vertical-align {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.ap-box-profile > {
+    height: 125px;
+}
+
+.ap-box-black {
+    background-color: #3F3E3E;
+    color: #ffffff
+}
+
+.ap-separator {
+    width: 100%;
+    height: 20px;
+}
