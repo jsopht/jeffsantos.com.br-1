@@ -1,2 +1,0 @@
-$.material.init();
-$.material.ripples();
