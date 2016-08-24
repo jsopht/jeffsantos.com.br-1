@@ -85,7 +85,7 @@
 
         window.onload = function() {
             calc();
-            $('.start-date, .end-date, .total-money').on('change', function() {calc()});
+            $('.start-date, .end-date, .total-money').on('change, keyup', function() {calc()});
         }
 
 
