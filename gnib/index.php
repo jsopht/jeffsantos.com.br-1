@@ -22,7 +22,7 @@ function dump($value) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
      <!-- Metas -->
-    <meta name="description" content="GNIB Appointment"/>
+    <meta name="description" content="GNIB Appointment by Jefferson Santos"/>
     <meta name="author" content="GNIB Appointment by Jefferson Santos"/>
     <meta name="copyright" content="Santos Jefferson © 2017 Todos os Direitos Reservados"/>
     <meta name="application-name" content="jeffsantos.com.br"/>
@@ -31,13 +31,13 @@ function dump($value) {
     <meta property="og:type" content="article"/>
     <meta property="og:image" content="https://jeffsantos.com.br/img/jefflssantos.jpg"/>
     <meta property="og:url" content="https://jeffsantos.com.br/gnib"/>
-    <meta property="og:description" content="GNIB Appointment"/>
+    <meta property="og:description" content="GNIB Appointment by Jefferson Santos"/>
     <meta property="article:author" content="https://www.facebook.com/Jeff.lssantos"/>
     <meta property="fb:admins" content="100001302304071"/>
 
     <meta name="twitter:card" content="summary"/>
     <meta name="twitter:title" content="GNIB Appointment by Jefferson Santos"/>
-    <meta name="twitter:description" content="GNIB Appointment"/>
+    <meta name="twitter:description" content="GNIB Appointment by Jefferson Santos"/>
     <meta name="twitter:image" content="https://jeffsantos.com.br/img/jefflssantos.jpg">
 
     <link rel="apple-touch-icon" sizes="57x57" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-57x57.png">
