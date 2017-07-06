@@ -1,19 +1,38 @@
 <?php
-$url = 'https://burghquayregistrationoffice.inis.gov.ie/Website/AMSREG/AMSRegWeb.nsf/(getApps4DTAvailability)?openpage&&cat=Study&sbcat=All&typ=New&_=1491146093977';
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL,$url);
-$result=curl_exec($ch);
-curl_close($ch);
 
+$type = 'New';
 
-$dates = json_decode($result)->slots;
-function dump($value) {
-  echo '<pre>';
-  var_dump($value);
-  echo '</pre>';
+if (queryHas('renew')) {
+  $type = 'Renewal';
 }
+
+$url = "https://burghquayregistrationoffice.inis.gov.ie/Website/AMSREG/AMSRegWeb.nsf/(getApps4DTAvailability)?openpage&&cat=Study&sbcat=All&typ={$type}&_=1491146093977";
+
+$dates = request($url)->slots;
+
+if (count($dates) < 2) {
+  $dates = ['Appointment dates not available now, try later.'];
+}
+
+function request($url) {
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_URL,$url);
+  $response = curl_exec($ch);
+  curl_close($ch);
+
+  return json_decode($response);
+}
+
+function queryHas($val) {
+  if (isset($_GET[$val]) && $_GET[$val] == 'true') {
+    return true;
+  }
+
+  return false;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,22 +41,22 @@ function dump($value) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
      <!-- Metas -->
-    <meta name="description" content="GNIB Appointment by Jefferson Santos"/>
-    <meta name="author" content="GNIB Appointment by Jefferson Santos"/>
+    <meta name="description" content="GNIB Appointment by @jefflssantos"/>
+    <meta name="author" content="GNIB Appointment by @jefflssantos"/>
     <meta name="copyright" content="Santos Jefferson © 2017 Todos os Direitos Reservados"/>
     <meta name="application-name" content="jeffsantos.com.br"/>
 
-    <meta property="ogtitle:" content="GNIB Appointment by Jefferson Santos"/>
+    <meta property="ogtitle:" content="GNIB Appointment by @jefflssantos"/>
     <meta property="og:type" content="article"/>
     <meta property="og:image" content="https://jeffsantos.com.br/img/jefflssantos.jpg"/>
     <meta property="og:url" content="https://jeffsantos.com.br/gnib"/>
-    <meta property="og:description" content="GNIB Appointment by Jefferson Santos"/>
+    <meta property="og:description" content="GNIB Appointment by @jefflssantos"/>
     <meta property="article:author" content="https://www.facebook.com/Jeff.lssantos"/>
     <meta property="fb:admins" content="100001302304071"/>
 
     <meta name="twitter:card" content="summary"/>
-    <meta name="twitter:title" content="GNIB Appointment by Jefferson Santos"/>
-    <meta name="twitter:description" content="GNIB Appointment by Jefferson Santos"/>
+    <meta name="twitter:title" content="GNIB Appointment by @jefflssantos"/>
+    <meta name="twitter:description" content="GNIB Appointment by @jefflssantos"/>
     <meta name="twitter:image" content="https://jeffsantos.com.br/img/jefflssantos.jpg">
 
     <link rel="apple-touch-icon" sizes="57x57" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-57x57.png">
@@ -58,16 +77,65 @@ function dump($value) {
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-TileImage" content="https://jeffsantos.com.br/img/favicon/mstile-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    
-    <title>GNIB Appointment</title>
+
+    <title>GNIB Appointment by @jefflssantos</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+    <style>
+      body, h1, h2, h3, h4, h5, h6,
+      button, input, optgroup, select, textarea {
+        font-family: "Source Sans Pro","Helvetica Neue",Calibre,Helvetica,Arial,sans-serif;
+        font-weight: 300;
+      }
+
+      body {
+        font-size: 16px;
+        line-height: 24px;
+        background-color: #f5f5f5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+    </style>
   </head>
   <body>
     <section class="container">
-      <div class="row my-5">
-        <div class="col-sm-12 col-md-6 offset-md-3">
-          <h3 class="text-center my-3"><a href="https://burghquayregistrationoffice.inis.gov.ie/Website/AMSREG/AMSRegWeb.nsf/AppSelect?OpenForm" target="_blank" class="">GNIB</a></h3>
+
+      <div class="row">
+        <div class="col-sm-12 my-5 text-center">
+          <h3 class="mb-0"><strong class="">GNIB Appointment</strong></h3>
+          <a href="https://www.facebook.com/jefflssantos"><small class="text-muted">by Jefferson Santos</small></a>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-12 col-md-6 col-lg-4 my-2">
+          <form>
+            <div class="form-group">
+              <label for="input-type">I have a GNIB card or I have been registered before:</label>
+              <select class="form-control" id="input-type" name="renew">
+                <option value="false">No</option>
+                <option value="true" <?php if(queryHas('renew')): ?> selected <?php endif; ?> >Yes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="input-countdown">Auto Refresh <?php if(queryHas('refresh')): ?><?php endif; ?></label>
+              <select class="form-control" id="input-countdown" name="refresh">
+                <option value="false">No</option>
+                <option value="true" <?php if(queryHas('refresh')): ?> selected <?php endif; ?> >Yes</option>
+              </select>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-8 my-2">
+          <div class="text-right mb-2">
+            <?php if(queryHas('refresh')): ?>
+                Refresh in <span class="btn btn-outline-warning btn-sm">00:<span id="countdown">59</span></span>
+              <?php endif; ?>
+          </div>
           <div class="list-group">
             <?php foreach ($dates as $date): ?>
               <a href="https://burghquayregistrationoffice.inis.gov.ie/Website/AMSREG/AMSRegWeb.nsf/AppSelect?OpenForm" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -78,8 +146,11 @@ function dump($value) {
             <?php endforeach; ?>
           </div>
         </div>
+
       </div>
+
     </section>
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -87,6 +158,25 @@ function dump($value) {
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-99029729-1', 'auto');
       ga('send', 'pageview');
+    </script>
+
+    <?php if(queryHas('refresh')): ?>
+      <script>
+        var i = 59;
+        setInterval(function() {
+          if (i == 0) {
+            return location.reload();
+          }
+          document.querySelector('#countdown').innerHTML -= 1;
+          i--;
+        }, 1000)
+      </script>
+    <?php endif; ?>
+
+    <script>
+      document.querySelector('form').onchange = function() {
+        this.submit();
+      }
     </script>
   </body>
 </html>
