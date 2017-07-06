@@ -27,10 +27,10 @@ function dump($value) {
     <meta name="copyright" content="Santos Jefferson © 2017 Todos os Direitos Reservados"/>
     <meta name="application-name" content="jeffsantos.com.br"/>
 
-    <meta property="og:title" content="GNIB Appointment by Jefferson Santos"/>
+    <meta property="ogtitle:" content="GNIB Appointment by Jefferson Santos"/>
     <meta property="og:type" content="article"/>
     <meta property="og:image" content="https://jeffsantos.com.br/img/jefflssantos.jpg"/>
-    <meta property="og:url" content="https://jeffsantos.com.br/"/>
+    <meta property="og:url" content="https://jeffsantos.com.br/gnib"/>
     <meta property="og:description" content="GNIB Appointment"/>
     <meta property="article:author" content="https://www.facebook.com/Jeff.lssantos"/>
     <meta property="fb:admins" content="100001302304071"/>
