@@ -21,6 +21,44 @@ function dump($value) {
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <!-- Metas -->
+    <meta name="description" content="GNIB Appointment"/>
+    <meta name="author" content="Jefferson Santos"/>
+    <meta name="copyright" content="Santos Jefferson © 2017 Todos os Direitos Reservados"/>
+    <meta name="application-name" content="jeffsantos.com.br"/>
+
+    <meta property="og:title" content="Jefferson Santos"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:image" content="http://jeffsantos.com.br/img/jefflssantos.jpg"/>
+    <meta property="og:url" content="http://jeffsantos.com.br/"/>
+    <meta property="og:description" content="GNIB Appointment"/>
+    <meta property="article:author" content="https://www.facebook.com/Jeff.lssantos"/>
+    <meta property="fb:admins" content="100001302304071"/>
+
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:title" content="Jefferson Santos"/>
+    <meta name="twitter:description" content="GNIB Appointment"/>
+    <meta name="twitter:image" content="http://jeffsantos.com.br/img/jefflssantos.jpg">
+
+    <link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/favicon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/favicon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="img/favicon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="img/favicon/manifest.json">
+    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="img/favicon/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    
     <title>GNIB Appointment</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
