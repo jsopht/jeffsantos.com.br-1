@@ -121,12 +121,21 @@ function queryHas($val) {
               </select>
             </div>
             <div class="form-group">
-              <label for="input-countdown">Auto Refresh <?php if(queryHas('refresh')): ?><?php endif; ?></label>
+              <label for="input-countdown">Auto Refresh:</label>
               <select class="form-control" id="input-countdown" name="refresh">
                 <option value="false">No</option>
                 <option value="true" <?php if(queryHas('refresh')): ?> selected <?php endif; ?> >Yes</option>
               </select>
             </div>
+            <?php if(queryHas('refresh')): ?>
+              <div class="form-group">
+                <label for="input-alarm">Alarm:</label>
+                <select class="form-control" id="input-alarm" name="alarm">
+                  <option value="false">No</option>
+                  <option value="true" <?php if(queryHas('alarm')): ?> selected <?php endif; ?> >Yes</option>
+                </select>
+              </div>
+            <?php endif; ?>
           </form>
         </div>
 
@@ -151,6 +160,26 @@ function queryHas($val) {
 
     </section>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">Yeah!!! Available dates :)
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="#" frameborder="0"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -160,23 +189,30 @@ function queryHas($val) {
       ga('send', 'pageview');
     </script>
 
-    <?php if(queryHas('refresh')): ?>
-      <script>
-        var i = 59;
-        setInterval(function() {
-          if (i == 0) {
-            return location.reload();
-          }
-          document.querySelector('#countdown').innerHTML -= 1;
-          i--;
-        }, 1000)
-      </script>
-    <?php endif; ?>
-
     <script>
+      <?php if(queryHas('refresh')): ?>
+          var i = 59;
+          setInterval(function() {
+            if (i == 0) {
+              return location.reload();
+            }
+            document.querySelector('#countdown').innerHTML -= 1;
+            i--;
+          }, 1000)
+      <?php endif; ?>
+
       document.querySelector('form').onchange = function() {
         this.submit();
       }
+
+      <?php if (queryHas('alarm') && count($dates) > 1): ?>
+        $('.embed-responsive-item').attr('src', 'https://www.youtube.com/embed/oIURNi2U5vw/?rel=0&autoplay=1&loop=1&controls=0&playlist=oIURNi2U5vw')
+        $('#myModal').modal();
+        $('#myModal').on('hide.bs.modal', function () {
+          $('#myModal').remove();
+        })
+      <?php endif; ?>
+
     </script>
   </body>
 </html>
