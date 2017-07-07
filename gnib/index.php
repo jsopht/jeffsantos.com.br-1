@@ -211,6 +211,14 @@ function queryHas($val) {
         $('#myModal').on('hide.bs.modal', function () {
           $('#myModal').remove();
         })
+
+        var oldTitle = document.title;
+        var alertTitle = 'HEY!!!! LOOK!'
+        setInterval(function(){
+            var title = document.title;
+            document.title = (title == alertTitle ? oldTitle : alertTitle);
+        }, 800);
+
       <?php endif; ?>
 
     </script>
