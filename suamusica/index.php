@@ -76,6 +76,11 @@ $album['musics'] = $musics;
             font-size: 1.3rem;
         }
 
+        .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+            background-color: #2a7ebd;
+            border: 0;
+        }
+
         .music-list {
             margin-top: 30px;
         }
@@ -132,7 +137,7 @@ $album['musics'] = $musics;
                         <h5 class="center-block"><?= $album['title']; ?> </h5>
                   </button>
                   <?php foreach ($album['musics'] as $i => $music): ?>
-                    <button type="button" class="bg-blue list-group-item list-group-item-action music-box <?= $i == 0 ? 'active' : '' ?>">
+                    <button type="button" class="list-group-item list-group-item-action music-box <?= $i == 0 ? 'active' : '' ?>">
                         <span><?= str_replace('.mp3', '', $music['title']) ;?></span>
                         <div class="hidden music-data">
                             <input type="hidden" class="music-url" value="<?= $music['url'] ?>">
