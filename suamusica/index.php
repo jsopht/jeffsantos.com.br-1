@@ -84,6 +84,13 @@ $album['musics'] = $musics;
         .music-list {
             margin-top: 30px;
         }
+        .player-box p {
+            text-align: center;
+            display: block;
+            color: white;
+            padding-top: 15px;
+
+        }
         .list-group .music-box,
         .player-box p {
             display: inline-block;
@@ -147,7 +154,7 @@ $album['musics'] = $musics;
                 </div>
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 player-box">
+            <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
                 <p class="list-group-item list-group-item-action active current-playing"><?= str_replace('.mp3', '', $album['musics'][0]['title']) ?></p>
                 <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
                 <audio id="player" controls preload="none">
