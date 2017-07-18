@@ -117,7 +117,7 @@ $album['musics'] = $musics;
 <body class="bg-blue">
     <div class="container music-list">
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-7">
+            <div class="col-sm-12">
                 <form>
                     <div class="form-group">
                         <input type="text" id="ipt-url" class="form-control" placeholder="Enter URL">
@@ -127,7 +127,7 @@ $album['musics'] = $musics;
         </div>
         <hr>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-5">
+            <div class="col-sm-12 col-md-6 col-lg-7">
                 <div class="list-group">
                   <button type="button" class="list-group-item list-group-item-action title">
                         <h5 class="center-block"><?= $album['title']; ?> </h5>
@@ -143,7 +143,7 @@ $album['musics'] = $musics;
                 </div>
             </div>
 
-            <div class="col-xs-4 offset-xs-1 player-box">
+            <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 player-box">
                 <p class="list-group-item list-group-item-action active current-playing"><?= str_replace('.mp3', '', $album['musics'][0]['title']) ?></p>
                 <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
                 <audio id="player" controls preload="none">
