@@ -62,9 +62,20 @@ $album['musics'] = $musics;
 <html>
 <head>
 <meta name="referrer" content="no-referrer" />
-    <title>Teste</title>
+    <title>Sua Música</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
     <style>
+        body, button, h1, h2, h3, h4, h5, h6, input, optgroup, select, textarea {
+            font-family: "Source Sans Pro","Helvetica Neue",Calibre,Helvetica,Arial,sans-serif;
+            font-weight: 300;
+        }
+
+        .form-control {
+            padding: 0.8rem .75rem;
+            font-size: 1.3rem;
+        }
+
         .music-list {
             margin-top: 30px;
         }
@@ -106,7 +117,7 @@ $album['musics'] = $musics;
 <body class="bg-blue">
     <div class="container music-list">
         <div class="row">
-            <div class="col-xs-8 offset-xs-2 col-sm-12">
+            <div class="col-sm-12 col-md-6 col-lg-7">
                 <form>
                     <div class="form-group">
                         <input type="text" id="ipt-url" class="form-control" placeholder="Enter URL">
@@ -116,7 +127,7 @@ $album['musics'] = $musics;
         </div>
         <hr>
         <div class="row">
-            <div class="col-xs-6 col-sm-12">
+            <div class="col-sm-12 col-md-6 col-lg-5">
                 <div class="list-group">
                   <button type="button" class="list-group-item list-group-item-action title">
                         <h5 class="center-block"><?= $album['title']; ?> </h5>
