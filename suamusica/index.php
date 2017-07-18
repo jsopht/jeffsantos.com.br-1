@@ -155,7 +155,7 @@ $album['musics'] = $musics;
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
-                <p class="list-group-item list-group-item-action active current-playing"><?= str_replace('.mp3', '', $album['musics'][0]['title']) ?></p>
+                <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]['title']) ?></p>
                 <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
                 <audio id="player" controls preload="none">
                     <source src="<?= $album['musics'][0]['url'] ?>" id="mp3-source" type="audio/mp3">
