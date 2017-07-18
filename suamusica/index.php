@@ -96,7 +96,6 @@ $album['musics'] = $musics;
                 display: block;
         }
         .player-box {
-            background-color: #0275d8;
             padding-bottom: 25px;
         }
         audio {
