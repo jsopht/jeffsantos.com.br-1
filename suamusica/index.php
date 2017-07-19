@@ -86,7 +86,7 @@ $album['musics'] = $musics;
         }
         .player-box p {
             text-align: center;
-            display: block;
+            display: block !important;
             color: white;
             padding-top: 15px;
 
