@@ -10,52 +10,29 @@ Debugger::enable();
 
 header('Access-Control-Allow-Origin: *');
 $_SERVER['HTTP_HOST'] = 'www.suamusica.com.br';
-const SITE_URL_BASE = 'https://www.suamusica.com.br';
 
 $client = new \GuzzleHttp\Client();
 
+$album['musics'] = [];
+$album['title'] = 'No music to list';
+
 if(isset($_GET['q'])) {
-    $urlAbm = str_replace('https://www.suamusica.com.br/', '', $_GET['q']);
+    $response = $client->request(
+        'GET', $_GET['q'], ['decode_content' => 'gzip']
+    );
+
+    $response = HtmlDomParser::str_get_html($response->getBody());
+
+    $album['musics'] = json_decode(htmlspecialchars_decode($response->find('input[data-json]')[0]->attr['data-json']));
+    $album['title'] = $album['musics'][0]->album;
+    $album['thumbnail'] = $response->find('.cover')[0]->src;
 } else {
-    $urlAbm = 'WesleySafadaoMossoroRNRerpertorioNovo';
+    $album['title'] = 'Add a Sua Música URL to start';
 }
 
-// dump(SITE_URL_BASE . '/' . $urlAbm);
-
-$response = $client->request(
-    'GET',
-    SITE_URL_BASE . '/' . $urlAbm,
-    ['decode_content' => 'gzip']
-);
-
-$response = HtmlDomParser::str_get_html($response->getBody());
-
-$thumbnail = SITE_URL_BASE . $response->find('.cover')[0]->src;
-$abBase = getBaseUrl($response->find('.cover')[0]->src);
-
-function getBaseUrl($url) {
-    $url = str_replace('dirs', 'file', $url);
-    $url = explode('/', $url);
-    $url = "https://{$url[1]}.files.suamusica.com.br/{$url[2]}/{$url[3]}";
-    $url = str_replace('file.', 'file1.', $url);
-    return $url;
+function getMusicUrl($music) {
+    return "https://stream.suamusica.com.br/{$music->dono}/{$music->cdid}/" . rawurlencode($music->titulo);
 }
-
-$album = [
-    'title'     => trim($response->find('.top_post_title h2')[0]->plaintext),
-    'thumbnail' => $thumbnail,
-    'abBase'    => $abBase,
-];
-
-$rowMusics = $response->find('.musicas_do .addSingle');
-foreach ($rowMusics as $i => $music) {
-    $musics[$i] = [
-        'title' => $music->getAttribute('data-arquivo'),
-        'url'   => $abBase . '/' . rawurlencode($music->getAttribute('data-arquivo'))
-    ];
-}
-
-$album['musics'] = $musics;
 
 ?>
 <!DOCTYPE html>
@@ -145,22 +122,24 @@ $album['musics'] = $musics;
                   </button>
                   <?php foreach ($album['musics'] as $i => $music): ?>
                     <button type="button" class="list-group-item list-group-item-action music-box <?= $i == 0 ? 'active' : '' ?>">
-                        <span><?= str_replace('.mp3', '', $music['title']) ;?></span>
+                        <span><?= str_replace('.mp3', '', $music->titulo) ;?></span>
                         <div class="hidden music-data">
-                            <input type="hidden" class="music-url" value="<?= $music['url'] ?>">
+                            <input type="hidden" class="music-url" value="<?= getMusicUrl($music) ?>">
                         </div>
                     </button>
                   <?php endforeach ?>
                 </div>
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
-                <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]['title']) ?></p>
-                <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
-                <audio id="player" controls preload="none">
-                    <source src="<?= $album['musics'][0]['url'] ?>" id="mp3-source" type="audio/mp3">
-                </audio>
-            </div>
+            <?php if (true): ?>
+                <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
+                    <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]->titulo) ?></p>
+                    <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
+                    <audio id="player" controls preload="none">
+                        <source src="<?= getMusicUrl($album['musics'][0]) ?>" id="mp3-source" type="audio/mp3">
+                    </audio>
+                </div>
+            <?php endif ?>
         </div>
     </div>
 
