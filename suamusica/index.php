@@ -131,7 +131,7 @@ function getMusicUrl($music) {
                 </div>
             </div>
 
-            <?php if (true): ?>
+            <?php if (isset($album['musics'][0])): ?>
                 <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
                     <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]->titulo) ?></p>
                     <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
