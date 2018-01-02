@@ -8,15 +8,15 @@ use Tracy\Debugger;
 
 Debugger::enable();
 
-header('Access-Control-Allow-Origin: *');
-$_SERVER['HTTP_HOST'] = 'www.suamusica.com.br';
-
-$client = new \GuzzleHttp\Client();
-
 $album['musics'] = [];
 $album['title'] = 'No music to list';
 
 if(isset($_GET['q'])) {
+    header('Access-Control-Allow-Origin: *');
+    $_SERVER['HTTP_HOST'] = 'www.suamusica.com.br';
+
+    $client = new \GuzzleHttp\Client();
+
     $response = $client->request(
         'GET', $_GET['q'], ['decode_content' => 'gzip']
     );
