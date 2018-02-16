@@ -105,7 +105,7 @@ function getMusicUrl($music) {
 <body class="bg-blue">
     <div class="container music-list">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-12">
                 <form>
                     <div class="form-group">
                         <input type="text" id="ipt-url" class="form-control" placeholder="Enter URL">
@@ -115,7 +115,7 @@ function getMusicUrl($music) {
         </div>
         <hr>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-7">
+            <div class="col-12 col-md-6 col-lg-7">
                 <div class="list-group">
                   <button type="button" class="list-group-item list-group-item-action title">
                         <h5 class="center-block"><?= $album['title']; ?> </h5>
@@ -132,26 +132,59 @@ function getMusicUrl($music) {
             </div>
 
             <?php if (isset($album['musics'][0])): ?>
-                <div class="col-sm-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
+                <div class="col-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
                     <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]->titulo) ?></p>
-                    <img src="<?= $album['thumbnail'] ?>" class="img-fluid" alt="Responsive image">
+                    <img src="<?= $album['thumbnail'] ?>" class="img-fluid">
                     <audio id="player" controls preload="none">
                         <source src="<?= getMusicUrl($album['musics'][0]) ?>" id="mp3-source" type="audio/mp3">
                     </audio>
                 </div>
             <?php endif ?>
+
+            <audio id="player-buffer" class="hidden-xs-up" controls preload="none">
+                <source src="#" id="mp3-source-buffer" type="audio/mp3">
+            </audio>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
+        function clearIntervals() {
+            for (var i = 1; i < 99; i++)
+                window.clearInterval(i)
+        }
+
+        function buffer() {
+
+            clearIntervals()
+            $activeSong = $('.active').next()
+            if ($activeSong.length != 0) {
+
+                console.log('Has next music')
+
+                $('#mp3-source-buffer').attr('src', $activeSong.find('.music-url').val())
+                setInterval(setBuffer, 2000)
+            }
+        }
+
+        function setBuffer() {
+
+            var player = $('#player')[0]
+            var pBuffer = $('#player-buffer')[0]
+
+            if (player.readyState == 4 && player.networkState == 1){
+                console.log('Loading audio buffer')
+                pBuffer.load()
+                clearIntervals()
+            }
+        }
 
         $('form input').bind("paste", function(e) {
             var pastedData = e.originalEvent.clipboardData.getData('text');
             window.location.replace(location.toString().replace(location.search, "") + "?q=" + pastedData);
         })
 
-        document.querySelector('#player').load()
+        $('#player')[0].load()
 
         $('.music-box').click(function() {
             $this = $(this)
@@ -159,13 +192,17 @@ function getMusicUrl($music) {
             $('.music-box').removeClass('active')
             $this.addClass('active')
             $('#mp3-source').attr('src', $this.find('.music-url').val())
-            document.querySelector('#player').load()
-            document.querySelector('#player').play()
+            $('#player')[0].load()
+            $('#player')[0].play()
+
+            buffer()
         })
 
-        document.querySelector('#player').onended = function() {
+        $('#player')[0].onended = function() {
             $('.list-group .active').next().click();
         };
+
+        buffer()
     </script>
 </body>
 </html>
