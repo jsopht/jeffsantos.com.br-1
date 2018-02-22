@@ -140,6 +140,6 @@
     <?php endif ?>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" defer></script>
-    <script src="app.js" defer></script>
+    <script src="app.js?v=1" defer></script>
 </body>
 </html>
