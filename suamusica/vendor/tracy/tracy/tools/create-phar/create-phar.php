@@ -43,7 +43,11 @@ __HALT_COMPILER();
 $phar->startBuffering();
 foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../../src', RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
 	echo "adding: {$iterator->getSubPathname()}\n";
-	$s = php_strip_whitespace($file);
+
+	$s = file_get_contents($file->getPathname());
+	if (strpos($s, '@tracySkipLocation') === false) {
+		$s = php_strip_whitespace($file->getPathname());
+	}
 
 	if ($file->getExtension() === 'js') {
 		$s = compressJs($s);
@@ -55,7 +59,7 @@ foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterato
 		$s = preg_replace_callback('#(<(script|style).*(?<![?=])>)(.*)(</)#Uis', function ($m) {
 			list(, $begin, $type, $s, $end) = $m;
 
-			if ($s === '' || strpos($s, '<?') !== FALSE) {
+			if ($s === '' || strpos($s, '<?') !== false) {
 				return $m[0];
 
 			} elseif ($type === 'script') {

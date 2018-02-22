@@ -1,208 +1,145 @@
-<?php
+<?php require 'app.php'; ?>
 
-require 'vendor/autoload.php';
-
-use GuzzleHttp\Stream\Stream;
-use Sunra\PhpSimple\HtmlDomParser;
-use Tracy\Debugger;
-
-Debugger::enable();
-
-$album['musics'] = [];
-$album['title'] = 'No music to list';
-
-if(isset($_GET['q'])) {
-    header('Access-Control-Allow-Origin: *');
-    $_SERVER['HTTP_HOST'] = 'www.suamusica.com.br';
-
-    $client = new \GuzzleHttp\Client();
-
-    $response = $client->request(
-        'GET', $_GET['q'], ['decode_content' => 'gzip']
-    );
-
-    $response = HtmlDomParser::str_get_html($response->getBody());
-
-    $album['musics'] = json_decode(htmlspecialchars_decode($response->find('input[data-json]')[0]->attr['data-json']));
-    $album['title'] = $album['musics'][0]->album;
-    $album['thumbnail'] = $response->find('.cover')[0]->src;
-} else {
-    $album['title'] = 'Add a Sua Música URL to start';
-}
-
-function getMusicUrl($music) {
-    return "https://stream.suamusica.com.br/{$music->dono}/{$music->cdid}/" . rawurlencode($music->titulo);
-}
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="referrer" content="no-referrer" />
-    <title>Sua Música</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-    <style>
-        body, button, h1, h2, h3, h4, h5, h6, input, optgroup, select, textarea {
-            font-family: "Source Sans Pro","Helvetica Neue",Calibre,Helvetica,Arial,sans-serif;
-            font-weight: 300;
-        }
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        .form-control {
-            padding: 0.8rem .75rem;
-            font-size: 1.3rem;
-        }
+    <title>Sua Música Player Alternativo</title>
 
-        .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
-            background-color: #2a7ebd;
-            border: 0;
-        }
+    <link rel="apple-touch-icon" sizes="57x57" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://jeffsantos.com.br/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="https://jeffsantos.com.br/img/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://jeffsantos.com.br/img/favicon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="https://jeffsantos.com.br/img/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="https://jeffsantos.com.br/img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://jeffsantos.com.br/img/favicon/manifest.json">
+    <link rel="mask-icon" href="https://jeffsantos.com.br/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="https://jeffsantos.com.br/img/favicon/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
-        .music-list {
-            margin-top: 30px;
-        }
-        .player-box p {
-            text-align: center;
-            display: block !important;
-            color: white;
-            padding-top: 15px;
-
-        }
-        .list-group .music-box,
-        .player-box p {
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden !important;
-            text-overflow: ellipsis;
-            cursor: pointer;
-        }
-        .title {
-            background-color: #f2f2f2;
-        }
-
-        audio, img {
-            margin: 0 auto;
-                display: block;
-        }
-        .player-box {
-            padding-bottom: 25px;
-        }
-        audio {
-            margin-top: 15px;
-        }
-
-        .bg-blue {
-            background: -moz-linear-gradient(45deg,rgba(15,184,188,1) 0,rgba(60,89,189,1) 100%);
-            background: -webkit-gradient(linear,left bottom,right top,color-stop(0,rgba(15,184,188,1)),color-stop(100%,rgba(60,89,189,1)));
-            background: -webkit-linear-gradient(45deg,rgba(15,184,188,1) 0,rgba(60,89,189,1) 100%);
-            background: -o-linear-gradient(45deg,rgba(15,184,188,1) 0,rgba(60,89,189,1) 100%);
-            background: -ms-linear-gradient(45deg,rgba(15,184,188,1) 0,rgba(60,89,189,1) 100%);
-            background: linear-gradient(45deg,rgba(15,184,188,1) 0,rgba(60,89,189,1) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c59bd', endColorstr='#0FB8BC', GradientType=1 );
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/darkly/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
 </head>
-<body class="bg-blue">
-    <div class="container music-list">
+<body>
+    <div class="container music-list my-3">
+
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 ">
                 <form>
                     <div class="form-group">
-                        <input type="text" id="ipt-url" class="form-control" placeholder="Enter URL">
+                        <input type="text" id="ipt-url" class="form-control p-3" placeholder="Cole a url aqui. Ex.: https://www.suamusica.com.br/oficialavioes/xand-aviao-2018-modo-aviao">
                     </div>
                 </form>
             </div>
         </div>
-        <hr>
+
         <div class="row">
-            <div class="col-12 col-md-6 col-lg-7">
+            <div class="col-12">
+                <div class="card mb-3 album-title" style="background-image: url(<?= $titleBgs[rand(0, count($titleBgs) - 1)]; ?>)">
+                    <div class="card-body pt-5">
+                        <h1 class="center-block pt-5"><strong><?= $album['title']; ?></strong></h1>
+                    </div>
+                    <div class="opacity"></div>
+                </div>
                 <div class="list-group">
-                  <button type="button" class="list-group-item list-group-item-action title">
-                        <h5 class="center-block"><?= $album['title']; ?> </h5>
-                  </button>
                   <?php foreach ($album['musics'] as $i => $music): ?>
                     <button type="button" class="list-group-item list-group-item-action music-box <?= $i == 0 ? 'active' : '' ?>">
-                        <span><?= str_replace('.mp3', '', $music->titulo) ;?></span>
+                        <?php
+                            $number =  explode(' - ', $music->titulo)[0];
+                            $title = str_replace(["{$number} -", '.mp3'], '', $music->titulo);
+                        ?>
+                        <span class="mr-3"><?= $number ?></span><span><?= $title ?></span>
                         <div class="hidden music-data">
                             <input type="hidden" class="music-url" value="<?= getMusicUrl($music) ?>">
                         </div>
                     </button>
                   <?php endforeach ?>
+
                 </div>
             </div>
+        </div>
 
-            <?php if (isset($album['musics'][0])): ?>
-                <div class="col-12 col-md-6 col-lg-4 offset-lg-1 bg-blue player-box">
-                    <p class="current-playing"><?= str_replace('.mp3', '', $album['musics'][0]->titulo) ?></p>
-                    <img src="<?= $album['thumbnail'] ?>" class="img-fluid">
-                    <audio id="player" controls preload="none">
-                        <source src="<?= getMusicUrl($album['musics'][0]) ?>" id="mp3-source" type="audio/mp3">
-                    </audio>
+        <div class="mb-5 pb-3 px-3">
+            <div class="row my-3">
+                <div class="col-12">By Jefferson Santos <a href="https://jeffsantos.com.br/" target="_blank">@jefflssantos</a></div>
+            </div>
+            <?php if(isset($_GET['q'])): ?>
+                <div class="row my-3">
+                    <div class="col-12"><a href="<?= $_GET['q'] ?>" target="_blank">Abrir álbum no Sua Música</a></div>
                 </div>
             <?php endif ?>
-
-            <audio id="player-buffer" class="hidden-xs-up" controls preload="none">
-                <source src="#" id="mp3-source-buffer" type="audio/mp3">
-            </audio>
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script>
-        function clearIntervals() {
-            for (var i = 1; i < 99; i++)
-                window.clearInterval(i)
-        }
+    <?php if(isset($_GET['q'])): ?>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom py-1 px-3">
+            <img src="<?= $album['thumbnail'] ?>" class="img-fluid navbar-brand">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link" id="btn-previous"><i class="fas fa-step-backward"></i></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="btn-play"><i class="fas fa-play"></i></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="btn-pause"><i class="fas fa-pause"></i></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="btn-next"><i class="fas fa-step-forward"></i></span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <span class="nav-link" id="time-start"><i class="fas fa-spinner"></i></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link mx-5 current-playing"></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link" id="time-end"><i class="fas fa-spinner"></i></span>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link"><i class="fas fa-volume-up" id="btn-audio-up"></i></span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link"><i class="fas fa-volume-off" id="btn-audio-off"></i></span>
+                    </li>
 
-        function buffer() {
+                    <li class="nav-item">
+                        <span class="nav-link" id="options">opcões</span>
+                    </li>
+                </ul>
+          </div>
+        </nav>
 
-            clearIntervals()
-            $activeSong = $('.active').next()
-            if ($activeSong.length != 0) {
+        <audio id="player" controls preload="none" class="d-none">
+            <source src="<?= getMusicUrl($album['musics'][0]) ?>" id="mp3-source" type="audio/mp3">
+        </audio>
 
-                console.log('Has next music')
+        <audio id="player-buffer" class="d-none" controls preload="none">
+            <source src="#" id="mp3-source-buffer" type="audio/mp3">
+        </audio>
+    <?php endif ?>
 
-                $('#mp3-source-buffer').attr('src', $activeSong.find('.music-url').val())
-                setInterval(setBuffer, 2000)
-            }
-        }
-
-        function setBuffer() {
-
-            var player = $('#player')[0]
-            var pBuffer = $('#player-buffer')[0]
-
-            if (player.readyState == 4 && player.networkState == 1){
-                console.log('Loading audio buffer')
-                pBuffer.load()
-                clearIntervals()
-            }
-        }
-
-        $('form input').bind("paste", function(e) {
-            var pastedData = e.originalEvent.clipboardData.getData('text');
-            window.location.replace(location.toString().replace(location.search, "") + "?q=" + pastedData);
-        })
-
-        $('#player')[0].load()
-
-        $('.music-box').click(function() {
-            $this = $(this)
-            $('.current-playing').text($this.find('span').text());
-            $('.music-box').removeClass('active')
-            $this.addClass('active')
-            $('#mp3-source').attr('src', $this.find('.music-url').val())
-            $('#player')[0].load()
-            $('#player')[0].play()
-
-            buffer()
-        })
-
-        $('#player')[0].onended = function() {
-            $('.list-group .active').next().click();
-        };
-
-        buffer()
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" defer></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

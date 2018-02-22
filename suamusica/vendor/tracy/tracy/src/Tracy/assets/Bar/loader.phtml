@@ -13,18 +13,19 @@ namespace Tracy;
 
 use Tracy;
 
+$nonceAttr = $nonce ? ' nonce="' . Helpers::escapeHtml($nonce) . '"' : '';
+$asyncAttr = $async ? ' async' : '';
 ?>
+<?php if (empty($content)): ?>
+<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $asyncAttr, $nonceAttr ?>></script>
+<?php else: ?>
 
 
 
 
 <!-- Tracy Debug Bar -->
-<div id="tracy-debug" data-id="<?= htmlspecialchars($contentId) ?>"></div>
-<?php if ($contentId): ?>
-<script src="?_tracy_bar=<?= urlencode("content.$contentId") ?>&amp;XDEBUG_SESSION_STOP=1"></script>
-<?php else: ?>
-<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1"></script>
-<script>
+<script src="?_tracy_bar=js&amp;v=<?= urlencode(Debugger::VERSION) ?>&amp;XDEBUG_SESSION_STOP=1" data-id="<?= Helpers::escapeHtml($contentId) ?>"<?= $nonceAttr ?>></script>
+<script<?= $nonceAttr ?>>
 Tracy.Debug.init(<?= json_encode($content) ?>, <?= json_encode($dumps) ?>);
 </script>
 <?php endif ?>
