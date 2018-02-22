@@ -1,4 +1,4 @@
-let bufferIntervalId
+let setBufferInterval
 let playing = true
 let calcAudioTimeInterval
 
@@ -27,19 +27,18 @@ function playerIconByStatus(prop, targetTrue, targetFalse) {
 }
 
 function buffer() {
-    clearInterval(bufferIntervalId)
-    $activeSong = $('.active').next()
-    if ($activeSong.length != 0) {
-
+    clearInterval(setBufferInterval)
+    $nextSong = $('.active').next()
+    if ($nextSong.length != 0) {
         console.log('Has next music')
 
-        $('#mp3-source-buffer').attr('src', $activeSong.find('.music-url').val())
-        bufferIntervalId = setInterval(setBuffer, 2000)
+        $('#mp3-source-buffer').attr('src', $nextSong.find('.music-url').val())
+
+        setBufferInterval = setInterval(setBuffer, 2000)
     }
 }
 
 function setBuffer() {
-
     var player = $('#player')[0]
     var pBuffer = $('#player-buffer')[0]
 
@@ -47,7 +46,7 @@ function setBuffer() {
 
     if (player.readyState == 4 && player.networkState == 1){
         pBuffer.load()
-        clearInterval(bufferIntervalId)
+        clearInterval(setBufferInterval)
     }
 }
 
@@ -55,8 +54,9 @@ function convertTime(time) {
     var minutes = parseInt(time / 60, 10)
     var seconds = parseInt(time % 60)
 
-    if (seconds.toString().length < 2)
+    if (seconds.toString().length < 2) {
         seconds = '0' + seconds
+    }
 
     return minutes + ":" + seconds
 }
@@ -90,8 +90,6 @@ $('.music-box').click(function() {
     } else {
         $('#btn-next').addClass('disabled')
     }
-
-    console.log('play status: ' + playing)
 
     if (playing) {
         player.play()
@@ -137,12 +135,10 @@ $('#options').click(function() {
 
 player.onplay = function() {
     calcAudioTime()
-    console.log('playing ' + playing)
 }
 
 player.onpause = function() {
     clearInterval(calcAudioTimeInterval)
-    console.log('paused' + playing)
 }
 
 player.onended = function() {
