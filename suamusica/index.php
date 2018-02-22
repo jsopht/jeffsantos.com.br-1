@@ -57,8 +57,8 @@
                   <?php foreach ($album['musics'] as $i => $music): ?>
                     <button type="button" class="list-group-item list-group-item-action music-box <?= $i == 0 ? 'active' : '' ?>">
                         <?php
-                            $number =  explode(' - ', $music->titulo)[0];
-                            $title = str_replace(["{$number} -", '.mp3'], '', $music->titulo);
+                            $number =  explode(' ', $music->titulo)[0];
+                            $title = str_replace(["{$number} -", "{$number} ", '.mp3'], '', $music->titulo);
                         ?>
                         <span class="mr-3"><?= $number ?></span><span><?= $title ?></span>
                         <div class="hidden music-data">
