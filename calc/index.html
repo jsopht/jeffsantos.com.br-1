@@ -28,7 +28,7 @@
     var str  = document.querySelector('input').value.split(':')
     var hour = 50
     var money = str[0] * hour + (str[1]/60) * hour + ((str[2]/60)/60) * hour
-    document.querySelector('.result').innerHTML = 'R$' + money
+    document.querySelector('.result').innerHTML = 'R$' + parseFloat(money).toPrecision(4)
   }
 </script>
 </body>
