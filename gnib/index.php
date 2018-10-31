@@ -220,7 +220,10 @@ function queryHas($val) {
         }, 800);
 
       <?php endif; ?>
-
+    
+    </script>
+    <script>
+        document.querySelector('a').remove()
     </script>
   </body>
 </html>
